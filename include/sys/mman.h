@@ -1,3 +1,6 @@
+#ifndef _SYS_MMAN_H
+#define _SYS_MMAN_H
+
 // https://github.com/openbsd/src/blob/a246f7a0bc5ae64e47a2d63ae5fa3e50d02d5962/sys/sys/mman.h
 
 /*
@@ -36,3 +39,5 @@
 void *	mmap(void *, size_t, int, int, int, off_t);
 int	mprotect(void *, size_t, int);
 int	munmap(void *, size_t);
+
+#endif

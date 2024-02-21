@@ -4091,8 +4091,12 @@ enum {
         AC_LIBOBJ([wasm/setjmp])
         AC_LIBOBJ([wasm/machine_core])
         AC_LIBOBJ([wasm/setjmp_core])
-        PLATFORM_DIR=wasm
-])
+        PLATFORM_DIR=wasm]
+    [m68k*], [
+        FIRSTMAKEFILE=GNUmakefile:m68k/GNUmakefile.in
+        AC_LIBOBJ([m68k/mman])
+        PLATFORM_DIR=m68k]
+)
 
 MINIOBJS="$MINIDLNOBJ"
 

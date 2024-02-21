@@ -1,0 +1,7 @@
+include Makefile
+include $(srcdir)/template/GNUmakefile.in
+
+m68kdir = $(srcdir)/m68k
+GNUmakefile: $(m68kdir)/GNUmakefile.in
+
+m68k/mman.$(OBJEXT): $(m68kdir)/mman.c $(PLATFORM_D)

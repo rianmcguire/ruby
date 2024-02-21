@@ -87,20 +87,8 @@ void *mmap(void *addr, size_t length, int prot, int flags,
     // or with zeros.
     addr = map + 1;
     if ((flags & MAP_ANON) == 0) {
-        char *body = (char *)addr;
-        while (length > 0) {
-            const ssize_t nread = pread(fd, body, length, offset);
-            if (nread < 0) {
-                if (errno == EINTR)
-                    continue;
-                return MAP_FAILED;
-            }
-            if (nread == 0)
-                break;
-            length -= (size_t)nread;
-            offset += (size_t)nread;
-            body += (size_t)nread;
-        }
+        // TODO: fake file mmap
+        return MAP_FAILED;
     } else {
         memset(addr, 0, length);
     }
@@ -122,4 +110,8 @@ int munmap(void *addr, size_t length) {
 
     // Success!
     return 0;
+}
+
+int mprotect(void *addr, size_t len, int prot) {
+    return ENOTSUP;
 }
