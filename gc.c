@@ -402,6 +402,8 @@ rb_gc_guarded_ptr_val(volatile VALUE *ptr, VALUE val)
 #ifndef GC_CAN_COMPILE_COMPACTION
 #if defined(__wasi__) /* WebAssembly doesn't support signals */
 # define GC_CAN_COMPILE_COMPACTION 0
+#elif defined(__m68k__)
+# define GC_CAN_COMPILE_COMPACTION 0
 #else
 # define GC_CAN_COMPILE_COMPACTION 1
 #endif
