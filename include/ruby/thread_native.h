@@ -42,7 +42,7 @@ typedef pthread_t rb_nativethread_id_t;
 typedef pthread_mutex_t rb_nativethread_lock_t;
 typedef pthread_cond_t rb_nativethread_cond_t;
 
-#elif defined(__wasi__) // no-thread platforms
+#elif defined(__wasi__) || defined(__m68k__) // no-thread platforms
 
 typedef struct rb_nativethread_id_t *rb_nativethread_id_t;
 typedef struct rb_nativethread_lock_t *rb_nativethread_lock_t;

@@ -26,6 +26,9 @@ AC_ARG_WITH(thread,
         [wasi*], [
             THREAD_MODEL=none
         ],
+        [m68k*], [
+            THREAD_MODEL=none
+        ],
         [
             THREAD_MODEL=pthread
         ]
