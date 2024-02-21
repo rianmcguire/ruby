@@ -5,6 +5,7 @@ docker run --rm -v $(pwd):/root \
     export CC=m68k-apple-macos-gcc
     export PATH=/Retro68-build/toolchain/m68k-apple-macos/bin:$PATH
     export CFLAGS="-Xlinker --no-warn-rwx-segments -Wa,-mcpu=68030 -isystem $(pwd)/include"
-
+    sed -i 's/test -s conftest\$ac_exeext/test -e conftest\$ac_exeext/' /usr/share/autoconf/autoconf/autoconf.m4f
     ./configure --host=m68k-apple-macos --disable-rubygems
+    make miniruby
 EOF
