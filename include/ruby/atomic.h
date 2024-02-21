@@ -75,6 +75,8 @@ typedef unsigned int rb_atomic_t;
 typedef LONG rb_atomic_t;
 #elif defined(__sun) && defined(HAVE_ATOMIC_H)
 typedef unsigned int rb_atomic_t;
+#elif defined(__m68k__)
+typedef unsigned int rb_atomic_t;
 #else
 # error No atomic operation found
 #endif
@@ -368,6 +370,11 @@ rbimpl_atomic_fetch_add(volatile rb_atomic_t *ptr, rb_atomic_t val)
     RBIMPL_ASSERT_OR_ASSUME(val <= INT_MAX);
     return atomic_add_int_nv(ptr, val) - val;
 
+#elif defined(__m68k__)
+  rb_atomic_t ret = *ptr;
+  *ptr = ret + val;
+  return ret;
+
 #else
 # error Unsupported platform.
 #endif
@@ -404,6 +411,8 @@ rbimpl_atomic_add(volatile rb_atomic_t *ptr, rb_atomic_t val)
     /* Ditto for `atomic_add_int_nv`. */
     RBIMPL_ASSERT_OR_ASSUME(val <= INT_MAX);
     atomic_add_int(ptr, val);
+#elif defined(__m68k__)
+  *ptr = *ptr + val;
 
 #else
 # error Unsupported platform.
@@ -511,6 +520,10 @@ rbimpl_atomic_fetch_sub(volatile rb_atomic_t *ptr, rb_atomic_t val)
     const signed neg = -1;
     RBIMPL_ASSERT_OR_ASSUME(val <= INT_MAX);
     return atomic_add_int_nv(ptr, neg * val) + val;
+#elif defined(__m68k__)
+  rb_atomic_t ret = *ptr;
+  *ptr = ret - val;
+  return ret;
 
 #else
 # error Unsupported platform.
@@ -538,6 +551,8 @@ rbimpl_atomic_sub(volatile rb_atomic_t *ptr, rb_atomic_t val)
     const signed neg = -1;
     RBIMPL_ASSERT_OR_ASSUME(val <= INT_MAX);
     atomic_add_int(ptr, neg * val);
+#elif defined(__m68k__)
+  *ptr = *ptr - val;
 
 #else
 # error Unsupported platform.
@@ -654,6 +669,8 @@ rbimpl_atomic_or(volatile rb_atomic_t *ptr, rb_atomic_t val)
 
 #elif defined(__sun) && defined(HAVE_ATOMIC_H)
     atomic_or_uint(ptr, val);
+#elif defined(__m68k__)
+  *ptr = *ptr | val;
 
 #else
 # error Unsupported platform.
@@ -688,6 +705,10 @@ rbimpl_atomic_exchange(volatile rb_atomic_t *ptr, rb_atomic_t val)
 
 #elif defined(__sun) && defined(HAVE_ATOMIC_H)
     return atomic_swap_uint(ptr, val);
+#elif defined(__m68k__)
+    rb_atomic_t ret = *ptr;
+    *ptr = val;
+    return ret;
 
 #else
 # error Unsupported platform.
@@ -827,6 +848,9 @@ rbimpl_atomic_cas(volatile rb_atomic_t *ptr, rb_atomic_t oldval, rb_atomic_t new
 
 #elif defined(__sun) && defined(HAVE_ATOMIC_H)
     return atomic_cas_uint(ptr, oldval, newval);
+#elif defined(__m68k__)
+    if (*ptr == oldval) *ptr = newval;
+    return oldval;
 
 #else
 # error Unsupported platform.
