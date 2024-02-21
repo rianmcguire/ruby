@@ -32,6 +32,7 @@
 #define NUM2SHORT     RB_NUM2SHORT        /**< @old{RB_NUM2SHORT} */
 #define NUM2USHORT    RB_NUM2USHORT       /**< @old{RB_NUM2USHORT} */
 #define USHORT2NUM    RB_INT2FIX          /**< @old{RB_INT2FIX} */
+#define SHORT2NUM     RB_INT2FIX          /**< @old{RB_INT2FIX} */
 #define RB_FIX2SHORT  rb_fix2short        /**< @alias{rb_fix2ushort} */
 #define FIX2SHORT     RB_FIX2SHORT        /**< @old{RB_FIX2SHORT} */
 
