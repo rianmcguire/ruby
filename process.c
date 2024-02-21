@@ -8298,6 +8298,7 @@ rb_clock_gettime(int argc, VALUE *argv, VALUE _)
 #endif
 
     if (SYMBOL_P(clk_id)) {
+#ifdef HAVE_CLOCK_GETTIME
 #ifdef CLOCK_REALTIME
         if (clk_id == RUBY_CLOCK_REALTIME) {
             c = CLOCK_REALTIME;
@@ -8324,6 +8325,7 @@ rb_clock_gettime(int argc, VALUE *argv, VALUE _)
             c = CLOCK_THREAD_CPUTIME_ID;
             goto gettime;
         }
+#endif
 #endif
 
         /*
@@ -8525,6 +8527,7 @@ rb_clock_getres(int argc, VALUE *argv, VALUE _)
     VALUE clk_id = argv[0];
 
     if (SYMBOL_P(clk_id)) {
+#ifdef HAVE_CLOCK_GETRES
 #ifdef CLOCK_REALTIME
         if (clk_id == RUBY_CLOCK_REALTIME) {
             c = CLOCK_REALTIME;
@@ -8551,6 +8554,7 @@ rb_clock_getres(int argc, VALUE *argv, VALUE _)
             c = CLOCK_THREAD_CPUTIME_ID;
             goto getres;
         }
+#endif
 #endif
 
 #ifdef RUBY_GETTIMEOFDAY_BASED_CLOCK_REALTIME
