@@ -2725,6 +2725,9 @@ AS_CASE([$coroutine_type], [yes|''], [
         [*-wasi*], [
             coroutine_type=asyncify
         ],
+        [m68k-*], [
+            coroutine_type=m68k
+        ],
         [
             AC_CHECK_FUNCS([getcontext swapcontext makecontext],
                 [coroutine_type=ucontext],

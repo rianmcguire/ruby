@@ -14,6 +14,8 @@
 # include "coroutine/ppc64le/Context.h"
 #elif defined __arm64__
 # include "coroutine/arm64/Context.h"
+#elif defined __m68k__
+# include "coroutine/m68k/Context.h"
 #else
 # error "Unsupported CPU"
 #endif
