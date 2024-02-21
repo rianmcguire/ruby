@@ -119,6 +119,9 @@ int mprotect(void *addr, size_t len, int prot) {
 
 // Dumping ground for other missing stdlib functions below
 
+#include <unistd.h>
+#include <sys/stat.h>
+
 long sysconf(int name)
 {
     if (name == _SC_PAGESIZE) {
@@ -126,5 +129,247 @@ long sysconf(int name)
     }
 
     errno = EINVAL;
+    return -1;
+}
+
+uid_t getuid() {
+    return 42;
+}
+
+uid_t geteuid() {
+    return 42;
+}
+
+gid_t getgid() {
+    return 42;
+}
+
+gid_t getegid() {
+    return 42;
+}
+
+int access(const char *path, int amode)
+{
+    struct stat buffer;
+    return stat(path, &buffer);
+}
+
+unsigned int sleep(unsigned int seconds)
+{
+}
+
+int dup(int oldfd)
+{
+    errno = ENOTSUP;
+    return -1;
+}
+
+int dup2(int oldfd, int newfd)
+{
+    errno = ENOTSUP;
+    return -1;
+}
+
+int execl(const char *pathname, const char *arg, ...
+                /*, (char *) NULL */)
+{
+    errno = ENOTSUP;
+    return -1;
+}
+
+int execv(const char *pathname, char *const argv[])
+{
+    errno = ENOTSUP;
+    return -1;
+}
+
+int execle(const char *pathname, const char *arg, ...
+                /*, (char *) NULL, char *const envp[] */)
+{
+    errno = ENOTSUP;
+    return -1;
+}
+
+pid_t getppid(void)
+{
+    return 1;
+}
+
+char *getwd(char *buf)
+{
+    errno = ENOTSUP;
+    return NULL;
+}
+
+ssize_t pread(int fildes, void *buf, size_t nbyte, off_t offset)
+{
+    off_t before = lseek(fildes, 0, SEEK_CUR);
+    if (before < 0) {
+        return before;
+    }
+
+    if (lseek(fildes, offset, SEEK_SET) < 0) {
+        errno = EOVERFLOW;
+        return -1;
+    }
+    ssize_t ret = read(fildes, buf, nbyte);
+    int reterr = errno;
+
+    lseek(fildes, before, SEEK_SET);
+
+    errno = reterr;
+    return ret;
+}
+
+ssize_t pwrite(int fildes, const void *buf, size_t nbyte,
+    off_t offset)
+{
+    off_t before = lseek(fildes, 0, SEEK_CUR);
+    if (before < 0) {
+        return before;
+    }
+
+    if (lseek(fildes, offset, SEEK_SET) < 0) {
+        errno = EOVERFLOW;
+        return -1;
+    }
+    ssize_t ret = write(fildes, buf, nbyte);
+    int reterr = errno;
+
+    lseek(fildes, before, SEEK_SET);
+
+    errno = reterr;
+    return ret;
+}
+
+#include <dirent.h>
+
+DIR *opendir(const char *name)
+{
+    errno = ENOTSUP;
+    return NULL;
+}
+
+int closedir(DIR *dirp)
+{
+    errno = ENOTSUP;
+    return -1;
+}
+
+
+struct dirent *readdir(DIR *dirp)
+{
+    errno = ENOTSUP;
+    return NULL;
+}
+
+void rewinddir(DIR *dirp)
+{
+}
+
+int chdir(const char *path)
+{
+    errno = ENOTSUP;
+    return -1;
+}
+
+int mkdir(const char *path, mode_t mode)
+{
+    errno = ENOTSUP;
+    return -1;
+}
+
+int rmdir(const char *path)
+{
+    errno = ENOTSUP;
+    return -1;
+}
+
+int pipe(int fildes[2])
+{
+    errno = ENOTSUP;
+    return -1;
+}
+
+#include <sys/stat.h>
+
+int chmod(const char *path, mode_t mode)
+{
+    return access(path, F_OK);
+}
+
+int chown(const char *path, uid_t owner, gid_t group)
+{
+    return access(path, F_OK);
+}
+
+mode_t umask(mode_t cmask) {
+    return 0;
+}
+
+#include <utime.h>
+
+int utime(const char *path, const struct utimbuf *times)
+{
+    return access(path, F_OK);
+}
+
+#include <pwd.h>
+
+struct passwd *getpwnam(const char *name)
+{
+    errno = ENOTSUP;
+    return NULL;
+}
+
+void endpwent()
+{
+}
+
+#include <sys/resource.h>
+
+int getrusage(int who, struct rusage *r_usage)
+{
+    errno = ENOTSUP;
+    return -1;
+}
+
+#include <stdio.h>
+
+FILE *popen(const char *command, const char *type)
+{
+    errno = ENOTSUP;
+    return NULL;
+}
+
+int pclose(FILE *stream)
+{
+    errno = ENOTSUP;
+    return -1;
+}
+
+#include <time.h>
+
+int clock_nanosleep(clockid_t clock_id, int flags,
+    const struct timespec *rqtp, struct timespec *rmtp)
+{
+    return 0;
+}
+
+#include <sys/wait.h>
+
+pid_t waitpid(pid_t pid, int *stat_loc, int options)
+{
+    errno = ENOTSUP;
+    return -1;
+}
+
+#include <sys/select.h>
+
+int select(int nfds, fd_set *restrict readfds,
+    fd_set *restrict writefds, fd_set *restrict errorfds,
+    struct timeval *restrict timeout)
+{
+    errno = ENOTSUP;
     return -1;
 }
