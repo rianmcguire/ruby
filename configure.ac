@@ -1982,9 +1982,10 @@ AS_CASE(["$target_os"],[freebsd*],[
 	 AC_REPLACE_FUNCS(close)
 	 ])
 
-# dup and dup2 are always available except for WASI
+# dup and dup2 are always available except for WASI and classic Mac OS
 AS_CASE(["$target_os"],
     [wasi*], [],
+    [macos*], [],
     [
         RUBY_REQUIRE_FUNCS(dup dup2)
     ]
