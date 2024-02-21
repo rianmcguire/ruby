@@ -113,5 +113,6 @@ int munmap(void *addr, size_t length) {
 }
 
 int mprotect(void *addr, size_t len, int prot) {
-    return ENOTSUP;
+    errno = ENOTSUP;
+    return -1;
 }
