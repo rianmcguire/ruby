@@ -116,3 +116,15 @@ int mprotect(void *addr, size_t len, int prot) {
     errno = ENOTSUP;
     return -1;
 }
+
+// Dumping ground for other missing stdlib functions below
+
+long sysconf(int name)
+{
+    if (name == _SC_PAGESIZE) {
+        return 4096;
+    }
+
+    errno = EINVAL;
+    return -1;
+}
