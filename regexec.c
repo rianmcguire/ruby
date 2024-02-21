@@ -37,7 +37,7 @@
 #endif
 
 #ifndef USE_TOKEN_THREADED_VM
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(__m68k__)
 #  define USE_TOKEN_THREADED_VM 1
 # else
 #  define USE_TOKEN_THREADED_VM 0
