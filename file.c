@@ -1684,12 +1684,14 @@ rb_file_symlink_p(VALUE obj, VALUE fname)
 #endif
 
 #ifdef S_ISLNK
+#  ifdef HAVE_LSTAT
     struct stat st;
 
     FilePathValue(fname);
     fname = rb_str_encode_ospath(fname);
     if (lstat_without_gvl(StringValueCStr(fname), &st) < 0) return Qfalse;
     if (S_ISLNK(st.st_mode)) return Qtrue;
+#  endif
 #endif
 
     return Qfalse;
@@ -2294,7 +2296,11 @@ rb_file_s_ftype(VALUE klass, VALUE fname)
 
     FilePathValue(fname);
     fname = rb_str_encode_ospath(fname);
+#ifdef HAVE_LSTAT
     if (lstat_without_gvl(StringValueCStr(fname), &st) == -1) {
+#else
+    if (stat_without_gvl(StringValueCStr(fname), &st) == -1) {
+#endif
         rb_sys_fail_path(fname);
     }
 
@@ -4278,7 +4284,11 @@ realpath_rec(long *prefixlenp, VALUE *resolvedp, const char *unresolved, VALUE f
             else {
                 struct stat sbuf;
                 int ret;
+#ifdef HAVE_LSTAT
                 ret = lstat_without_gvl(RSTRING_PTR(testpath), &sbuf);
+#else
+                ret = stat_without_gvl(RSTRING_PTR(testpath), &sbuf);
+#endif
                 if (ret == -1) {
                     int e = errno;
                     if (e == ENOENT && !NIL_P(fallback)) {
