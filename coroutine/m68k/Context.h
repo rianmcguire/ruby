@@ -41,7 +41,10 @@ static inline void coroutine_initialize(
     memset(context->stack_pointer, 0, sizeof(void*) * COROUTINE_REGISTERS);
 }
 
-struct coroutine_context * coroutine_transfer(struct coroutine_context * current, struct coroutine_context * target);
+struct coroutine_context * coroutine_transfer(struct coroutine_context * current, struct coroutine_context * target)
+{
+    rb_bug("not implemented");
+}
 
 static inline void coroutine_destroy(struct coroutine_context * context)
 {
